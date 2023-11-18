@@ -57,9 +57,9 @@ export default {
       includeNumbers: true,
       includeSymbols: true,
       generatedPassword: null,
-      passwordHistory: [], 
-      minLength: 8, 
-      maxLength: 15, 
+      passwordHistory: [],
+      minLength: 8,
+      maxLength: 15,
       scrollLineWidth: '0%',
     };
   },
@@ -104,23 +104,30 @@ export default {
       if (this.passwordHistory.length > 10) {
         this.passwordHistory.shift();
       }
-      copyToClipboard(password, index) {
-      const textArea = document.createElement('textarea');
-      textArea.value = password;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      // Set the copy success message
-      this.copySuccessMessage = 'Password copied to clipboard!';
-      
-      // Clear the message after a few seconds (optional)
-      setTimeout(() => {
-        this.copySuccessMessage = '';
-      }, 3000); 
-    }
-  
+
+      this.copyToClipboard(password);
+    },
+
+    copyToClipboard(password) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = password;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        // Set the copy success message
+        this.copySuccessMessage = 'Password copied to clipboard!';
+
+        // Clear the message after a few seconds (optional)
+        setTimeout(() => {
+          this.copySuccessMessage = '';
+        }, 3000);
+      } catch (error) {
+        // Handle any errors that may occur during copy
+        console.error('Unable to copy to clipboard', error);
+      }
     },
   },
 };
